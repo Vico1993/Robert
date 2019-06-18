@@ -1,0 +1,13 @@
+{
+  "name": "robert",
+  "version": "0.0.1",
+  "description": "Bot Telegram for your TRIP",
+  "main": "robert.js",
+  "scripts": {
+    "start": "node  --experimental-modules robert.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "telegraf": "^3.30.1"
+  }
+}
