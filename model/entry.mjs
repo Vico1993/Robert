@@ -2,12 +2,11 @@ import mongoose from 'mongoose'
 
 let Schema = mongoose.Schema;
 
-let Entry = new Schema({
+let EntrySchema = new Schema({
     text: {
         type: String,
         required: true
     }
 })
 
-let Model = mongoose.model( 'entry', Entry )
-module.exports = Model
+export const Entry = mongoose.model( 'entry', EntrySchema )
