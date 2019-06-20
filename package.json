@@ -3,9 +3,8 @@
   "version": "0.0.1",
   "description": "Bot Telegram for your TRIP",
   "main": "robert.js",
-  "type": "module",
   "scripts": {
-    "start": "node  --experimental-modules robert.js"
+    "start": "node  --experimental-modules robert.mjs"
   },
   "dependencies": {
     "dotenv": "^8.0.0",
