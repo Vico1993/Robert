@@ -1,17 +1,21 @@
-import {Entry} from './../model/entry'
+import mongoose from 'mongoose'
+import {Entry, Tag} from './../model'
 
 /**
  * Add Command
  *
  * @param {Context} ctx Telegraf Context of the Message
  */
-export const add = ( ctx ) => {
+export const add = async ( ctx ) => {
     let text = ctx.update.message.text
-    let tmp = text.split( " " )
+    const tmp = text.split( " " )
+    let tags = [] 
 
     let entry = new Entry(
         {
-            text: "", 
+            _id: new mongoose.Types.ObjectId(),
+            text: "",
+            tags: [] 
         }
     )
 
@@ -24,20 +28,34 @@ export const add = ( ctx ) => {
         }
 
         // hastag
-        // if ( elm.includes( "#" ) ) {
-        //     entry.tags = elm
-        //     continue
-        // }
+        if ( elm.includes( "#" ) ) {
+            tags.push( elm )
+            continue
+        }
 
         if ( entry.text == "" ) {
             entry.text = elm
         }
     }
 
-    entry.save( err => {
-        if ( err ) {
-            return next( err )
+    if ( tags.length > 0 ) {
+        for ( let tag of tags ) {
+            const newTag = new Tag({
+                _id: new mongoose.Types.ObjectId(),
+                tag: tag
+            })
+
+            entry.tags.push( newTag._id )
+
+            newTag.save()
         }
-        ctx.reply( "Hum.. Okay it's done" )
-    })
+
+        entry.save( err => {
+            if ( err ) {
+                return console.error( err )
+            }
+
+            ctx.reply( "Hum.. Okay it's done" )
+        })
+    }
 }

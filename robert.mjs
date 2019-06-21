@@ -1,4 +1,4 @@
-import { comand } from "./comand/comand"
+import { add, get } from "./comand"
 import Telegraf from 'telegraf'
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
@@ -22,6 +22,9 @@ const bot = new Telegraf( process.env.BOT_TOKEN )
 bot.start((ctx) => { ctx.reply( `Hello ${ctx.from.first_name}, What I can do for you today?` ) })
 
 // Add/Store something
-bot.command( "add", comand.add )
+bot.command( "add", add )
+
+// Return all element in the database
+bot.command( "get", get )
 
 bot.startPolling()
