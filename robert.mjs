@@ -7,7 +7,7 @@ import mongoose from 'mongoose'
 dotenv.config()
 
 // Setup URL to connect to the database
-const url = `mongodb://localhost/${process.env.MONGO_INITDB_DATABASE}`
+const url = `mongodb://mongodb/${process.env.MONGO_INITDB_DATABASE}`
 mongoose.connect( url, {useNewUrlParser: true} )
 
 // Make the actual connection

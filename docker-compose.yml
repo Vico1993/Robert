@@ -10,3 +10,16 @@ services:
             MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
         ports:
             - 27017:27017
+
+    robert:
+        image: "node:11-alpine"
+        user: "node"
+        container_name: robert
+        working_dir: /home/robert
+        environment:
+            - NODE_ENV=production
+        volumes:
+            - ./:/home/robert
+        command: "yarn start"
+        depends_on:
+            - mongodb
