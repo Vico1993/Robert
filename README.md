@@ -1,5 +1,5 @@
-# Robert
+# Robert 
 
-My small bot to play on the road... :) 
+My accounting friendly bot.
 
-## TODO: 
+## Don't forget to do
