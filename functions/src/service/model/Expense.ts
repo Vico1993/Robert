@@ -1,4 +1,4 @@
-import { Timestamp, CollectionReference } from "@google-cloud/firestore";
+import { Timestamp, CollectionReference, QuerySnapshot } from "@google-cloud/firestore";
 import { db } from './config'
 
 export class Expense {
@@ -28,23 +28,23 @@ export class Expense {
     }
 
     /**
-     * Return an Array of expenses store in the database
+     * Format the expense Object to a text message format
      *
-     * @param tag tag we want to check
+     * @returns {string}
      */
-    // static async GetExpenseByTag( tag:string ): Array<Expense> {
-    //     let expenses = await db.collection( "Expenses" ).where( tag )
-    // }
+    toString (): string {
+        return `${this._date}: ${this._amount} CAD`
+    }
 
     /**
-     * Get all Expenses
+     * Method who will translate the result from the Firestore into an array of Expense object
+     *
+     * @param data Result from the Firestore
+     * @return {Expense[]}
      */
-    static async GetAllExpense(): Promise<Expense[]> {
+    protected static Load( data: QuerySnapshot ): Expense[] {
         let exps: Expense[] = []
-        const expenses = await Expense._db.get()
-
-        expenses.forEach( exp => {
-            // console.log ( exp.data )
+        data.forEach( exp => {
             exps.push( new Expense( exp.data().amount, exp.data().devise, exp.data().date ) )
         })
 
@@ -52,17 +52,47 @@ export class Expense {
     }
 
     /**
+     * Get all Expenses save in the firestore
+     *
+     * @returns {Promise}
+     */
+    static async GetAllExpense(): Promise<Expense[]> {
+        const expenses = await Expense._db.get()
+        
+        return this.Load( expenses )
+    }
+
+    /**
      * Return the list of expenses for today
+     *
+     * @returns {Promise}
      */
     static async getAllExpenseForToday(): Promise<Expense[]> {
-        let exps: Expense[] = []
-        const expenses = await Expense._db.get() // where( 'date', '>=',  ).get()
+        // Get date for today first seconde
+        let today = new Date()
+        today.setHours( 0, 0, 0, 0 )
 
-        expenses.forEach( exp => {
-            // console.log ( exp.data )
-            exps.push( new Expense( exp.data().amount, exp.data().devise, exp.data().date ) )
-        })
+        const expenses = await Expense._db.where( 'date', '>=', Timestamp.fromDate( today ) ).get()
 
-        return exps
+        return this.Load( expenses )
+    }
+
+    /**
+     * Return the list of expenses for the Week
+     *
+     * @todo: Right know need to be execute in sunday.. if it's run on Monday... will return the same result as `getAllExpenseForToday`
+     * @returns {Promise}
+     */
+    static async getAllExpenseForTheWeek(): Promise<Expense[]> {
+        // Get date for today first seconde
+        let today = new Date()
+        const day = today.getDay() || 7
+        if ( day !== 1 ) {
+            today.setHours( -24 * ( day - 1 ) )
+        }
+
+        const expenses = await Expense._db.where( 'date', '>=', Timestamp.fromDate( today ) ).get()
+
+        return this.Load( expenses )
     }
 }
