@@ -1,5 +1,5 @@
 // import { add, get } from "./comand"
-import { add } from "./comand/add"
+import { add, get } from "./comand"
 import Telegraf from 'telegraf'
 import { config } from 'dotenv'
 
@@ -18,7 +18,7 @@ robert.start((ctx:any) => { ctx.reply( `Hello ${ctx.from.first_name}, What I can
 // Add/Store something
 robert.command( "add", add )
 
-// // Return all element in the database
-// bot.command( "get", get )
+// Return all element in the database
+robert.command( "get", get )
 
 export default robert

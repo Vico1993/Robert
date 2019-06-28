@@ -16,6 +16,6 @@ export const add = ( ctx:any ) => {
     })
     .catch( error => {
         console.error( "Somenthing happens, when I tried to add some an expense :", error )
-        ctx.reply( "Sorry.. Something happens in my system.. can't add this expense.. Check this syntax" )
+        ctx.reply( "Sorry.. Something happens in my system.. can't add this expense.. Check the syntax FIRST." )
     })
 }
