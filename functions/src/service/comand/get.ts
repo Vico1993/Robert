@@ -1,52 +1,50 @@
-import { Expense } from "../model/Expense";
+import { Expense } from "../model/Expense"
 
 /**
  * Get Command
  *
  * @param {Context} ctx Telegraf Context of the Message
  */
-export const get = ( ctx:any ) => {
+export const get = async ( ctx:any ) => {
     const message = ctx.update.message
     const tmp = message.text.split( " " )
 
     // tmp[ 1 ] should be `today` | `all` | `week`
     if ( typeof tmp[ 1 ] === "string" ) {
+        let sum = 0
         if ( tmp[ 1 ] == "today" ) {
-            return Expense.GetAllExpense().then( exps => {
-                ctx.reply( `This is every expense I found for the day` )
+            let exps = await Expense.getAllExpenseForToday()
 
-                exps.forEach( exp => {
-                    ctx.reply( exp.toString() )
-                })
-            }).catch( error => {
-                ctx.reply( `Sorry... something go wrongs for the day.. ${error}` )
-            })
+            if ( exps.length > 0 ) {
+                sum = exps.reduce((a, b) => a + Number( b._amount ), 0)
+            }
+            ctx.reply( `Today you spend : ${sum} $` )
+            return
+
         } else if ( tmp[ 1 ] == "all" ) {
-            return Expense.GetAllExpense().then( exps => {
-                ctx.reply( `This is every expense I found` )
+            let exps = await Expense.GetAllExpense()
 
-                exps.forEach( exp => {
-                    ctx.reply( exp.toString() )
-                })
-            }).catch( error => {
-                ctx.reply( `Sorry... something go wrongs for all expenses.. ${error}` )
-            })
+            if ( exps.length > 0 ) {
+                sum = exps.reduce((a, b) => a + Number( b._amount ), 0)
+            }
+
+            ctx.reply( `in total you spend : ${sum} $` )
+            return
         } else if ( tmp[ 1 ] == "week" ) {
-            return Expense.getAllExpenseForTheWeek().then( exps => {
-                ctx.reply( `This is what I found for this week` )
+            let exps = await Expense.getAllExpenseForTheWeek()
 
-                exps.forEach( exp => {
-                    ctx.reply( exp.toString() )
-                })
-            }).catch( error => {
-                ctx.reply( `Sorry... something go wrongs for the week.. ${error}` )
-            })
+            if ( exps.length > 0 ) {
+                sum = exps.reduce((a, b) => a + Number( b._amount ), 0)
+            }
+
+            ctx.reply( `this week you spend : ${sum} $` )
+            return
         } else {
             ctx.reply( `Hum... I'm sorry... but what is this ${tmp[ 1 ]}` )
-            return;
+            return
         }
     }
 
     ctx.reply( `Hum... Something goes wrong with your comand format...` )
-    return;
+    return
 }

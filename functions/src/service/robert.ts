@@ -1,17 +1,17 @@
 // import { add, get } from "./comand"
 import { add, get } from "./comand"
-import Telegraf from 'telegraf'
+import Telegraf from 'telegraf'
 import { config } from 'dotenv'
 
 // load environement variables from .env file
 config()
 
 if ( typeof process.env.TELEGRAM_BOT_TOKEN === undefined ) {
-    throw new Error( "Variable TELEGRAM_BOT_TOKEN not found in your environement variable, please set this variable" );
+    throw new Error( "Variable TELEGRAM_BOT_TOKEN not found in your environement variable, please set this variable" )
 }
 
 // Create the Bot with the HTTP TOKEN API
-const robert = new Telegraf( process.env.TELEGRAM_BOT_TOKEN || "" )
+const robert = new Telegraf( process.env.TELEGRAM_BOT_TOKEN || "", { telegram: { webhookReply: true } } )
 
 robert.start((ctx:any) => { ctx.reply( `Hello ${ctx.from.first_name}, What I can do for you today?` ) })
 

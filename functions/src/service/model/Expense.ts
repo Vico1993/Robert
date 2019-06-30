@@ -1,4 +1,4 @@
-import { Timestamp, CollectionReference, QuerySnapshot } from "@google-cloud/firestore";
+import { Timestamp, CollectionReference, QuerySnapshot } from "@google-cloud/firestore"
 import { db } from './config'
 
 export class Expense {
@@ -33,7 +33,9 @@ export class Expense {
      * @returns {string}
      */
     toString (): string {
-        return `${this._date}: ${this._amount} CAD`
+        const d = this._date.toDate()
+        const dateFormat = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " + d.getHours() + ":" + d.getMinutes()
+        return `${dateFormat}: ${this._amount} CAD`
     }
 
     /**
@@ -58,7 +60,7 @@ export class Expense {
      */
     static async GetAllExpense(): Promise<Expense[]> {
         const expenses = await Expense._db.get()
-        
+
         return this.Load( expenses )
     }
 
