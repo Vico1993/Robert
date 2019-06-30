@@ -12,8 +12,8 @@ export const get = async ( ctx:any ) => {
     // tmp[ 1 ] should be `today` | `all` | `week`
     if ( typeof tmp[ 1 ] === "string" ) {
         let sum = 0
-        if ( tmp[ 1 ] == "today" ) {
-            let exps = await Expense.getAllExpenseForToday()
+        if ( tmp[ 1 ] === "today" ) {
+            const exps = await Expense.getAllExpenseForToday()
 
             if ( exps.length > 0 ) {
                 sum = exps.reduce((a, b) => a + Number( b._amount ), 0)
@@ -21,8 +21,8 @@ export const get = async ( ctx:any ) => {
             ctx.reply( `Today you spend : ${sum} $` )
             return
 
-        } else if ( tmp[ 1 ] == "all" ) {
-            let exps = await Expense.GetAllExpense()
+        } else if ( tmp[ 1 ] === "all" ) {
+            const exps = await Expense.GetAllExpense()
 
             if ( exps.length > 0 ) {
                 sum = exps.reduce((a, b) => a + Number( b._amount ), 0)
@@ -30,8 +30,8 @@ export const get = async ( ctx:any ) => {
 
             ctx.reply( `in total you spend : ${sum} $` )
             return
-        } else if ( tmp[ 1 ] == "week" ) {
-            let exps = await Expense.getAllExpenseForTheWeek()
+        } else if ( tmp[ 1 ] === "week" ) {
+            const exps = await Expense.getAllExpenseForTheWeek()
 
             if ( exps.length > 0 ) {
                 sum = exps.reduce((a, b) => a + Number( b._amount ), 0)

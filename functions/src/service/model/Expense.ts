@@ -45,7 +45,7 @@ export class Expense {
      * @return {Expense[]}
      */
     protected static Load( data: QuerySnapshot ): Expense[] {
-        let exps: Expense[] = []
+        const exps: Expense[] = []
         data.forEach( exp => {
             exps.push( new Expense( exp.data().amount, exp.data().devise, exp.data().date ) )
         })
@@ -71,7 +71,7 @@ export class Expense {
      */
     static async getAllExpenseForToday(): Promise<Expense[]> {
         // Get date for today first seconde
-        let today = new Date()
+        const today = new Date()
         today.setHours( 0, 0, 0, 0 )
 
         const expenses = await Expense._db.where( 'date', '>=', Timestamp.fromDate( today ) ).get()
@@ -87,7 +87,7 @@ export class Expense {
      */
     static async getAllExpenseForTheWeek(): Promise<Expense[]> {
         // Get date for today first seconde
-        let today = new Date()
+        const today = new Date()
         const day = today.getDay() || 7
         if ( day !== 1 ) {
             today.setHours( -24 * ( day - 1 ) )
