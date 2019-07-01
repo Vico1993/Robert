@@ -40,6 +40,7 @@ export class Expense {
 
     /**
      * Method who will translate the result from the Firestore into an array of Expense object
+     * Return devices in CAD for an easy count ( FOR NOW )
      *
      * @param data Result from the Firestore
      * @return {Expense[]}
@@ -47,7 +48,15 @@ export class Expense {
     protected static Load( data: QuerySnapshot ): Expense[] {
         const exps: Expense[] = []
         data.forEach( exp => {
-            exps.push( new Expense( exp.data().amount, exp.data().devise, exp.data().date ) )
+            let amount = exp.data().amount
+
+            if ( exp.data().devise == "USD" ) {
+                amount = exp.data().amount * 1.31
+            } else if ( exp.data().devise == "EUR" ) {
+                amount = exp.data().amount * 1.49
+            }
+
+            exps.push( new Expense( amount, "CAD", exp.data().date ) )
         })
 
         return exps
