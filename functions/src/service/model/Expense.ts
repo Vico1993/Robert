@@ -81,7 +81,8 @@ export class Expense {
     static async getAllExpenseForToday(): Promise<Expense[]> {
         // Get date for today first seconde
         const today = new Date()
-        today.setHours( 0, 0, 0, 0 )
+        // Set the hours minus 7 to fixed the UTC timezone
+        today.setHours(-7, 0, 0, 0)
 
         const expenses = await Expense._db.where( 'date', '>=', Timestamp.fromDate( today ) ).get()
 
