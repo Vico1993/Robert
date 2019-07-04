@@ -10,38 +10,34 @@ export const get = async ( ctx:any ) => {
     const tmp = message.text.split( " " )
 
     // tmp[ 1 ] should be `today` | `week`
-    if ( typeof tmp[ 1 ] === "string" ) {
-        let sum = 0
-        if ( tmp[ 1 ] === "today" ) {
-            const exps = await Expense.getAllExpenseForToday()
+    let sum = 0
+    if ( tmp[ 1 ] === "today" ) {
+        const exps = await Expense.getAllExpenseForToday()
 
-            if ( exps.length > 0 ) {
-                sum = exps.reduce((a, b) => a + Number( b._amount ), 0)
-            }
-            ctx.reply( `Today you spend : ${sum.toFixed(2)} $` )
-            return
-
-        } else if ( tmp[ 1 ] === "week" ) {
-            const exps = await Expense.getAllExpenseForTheWeek()
-
-            if ( exps.length > 0 ) {
-                sum = exps.reduce((a, b) => a + Number( b._amount ), 0)
-            }
-
-            ctx.reply( `this week you spend : ${sum.toFixed(2)} $` )
-            return
-        } else {
-            const exps = await Expense.GetAllExpense()
-
-            if ( exps.length > 0 ) {
-                sum = exps.reduce((a, b) => a + Number( b._amount ), 0)
-            }
-
-            ctx.reply( `in total you spend : ${sum.toFixed(2)} $` )
-            return
+        if ( exps.length > 0 ) {
+            sum = exps.reduce((a, b) => a + Number( b._amount ), 0)
         }
-    }
 
-    ctx.reply( `Hum... Something goes wrong with your comand format...` )
-    return
+        ctx.reply( `Today you spend : ${sum.toFixed(2)} $` )
+        return
+
+    } else if ( tmp[ 1 ] === "week" ) {
+        const exps = await Expense.getAllExpenseForTheWeek()
+
+        if ( exps.length > 0 ) {
+            sum = exps.reduce((a, b) => a + Number( b._amount ), 0)
+        }
+
+        ctx.reply( `this week you spend : ${sum.toFixed(2)} $` )
+        return
+    } else {
+        const exps = await Expense.GetAllExpense()
+
+        if ( exps.length > 0 ) {
+            sum = exps.reduce((a, b) => a + Number( b._amount ), 0)
+        }
+
+        ctx.reply( `in total you spend : ${sum.toFixed(2)} $` )
+        return
+    }
 }

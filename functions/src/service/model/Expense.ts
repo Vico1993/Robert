@@ -50,9 +50,9 @@ export class Expense {
         data.forEach( exp => {
             let amount = exp.data().amount
 
-            if ( exp.data().devise == "USD" ) {
+            if ( exp.data().devise === "USD" ) {
                 amount = exp.data().amount * 1.31
-            } else if ( exp.data().devise == "EUR" ) {
+            } else if ( exp.data().devise === "EUR" ) {
                 amount = exp.data().amount * 1.49
             }
 
@@ -81,8 +81,7 @@ export class Expense {
     static async getAllExpenseForToday(): Promise<Expense[]> {
         // Get date for today first seconde
         const today = new Date()
-        // Set the hours minus 7 to fixed the UTC timezone
-        today.setHours(-7, 0, 0, 0)
+        today.setHours(0, 0, 0, 0)
 
         const expenses = await Expense._db.where( 'date', '>=', Timestamp.fromDate( today ) ).get()
 
