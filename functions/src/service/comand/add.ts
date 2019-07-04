@@ -11,8 +11,18 @@ export const add = ( ctx:any ) => {
 
     const expense = new Expense( tmp[ 1 ], tmp[ 2 ] || "CAD" )
 
-    return expense.Save().then( () => {
-        ctx.reply( "Hum.. Okay it's done" )
+    return expense.Save().then( async () => {
+        // When the document is save
+        // Check the new sum of the day and return the result
+        let sum = 0
+        const exps = await Expense.getAllExpenseForToday()
+
+        if ( exps.length > 0 ) {
+            sum = exps.reduce((a, b) => a + Number( b._amount ), 0)
+        }
+
+        ctx.reply( `It's done! Today you spend : ${sum.toFixed(2)} $` )
+        return
     })
     .catch( error => {
         console.error( "Somenthing happens, when I tried to add some an expense :", error )
