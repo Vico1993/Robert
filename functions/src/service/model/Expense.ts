@@ -5,11 +5,13 @@ export class Expense {
     _amount: number
     _devise: string
     _date: Timestamp
+    _tags: Array<string>
 
     static _db: CollectionReference = db.collection( "Expenses" )
 
-    constructor( amount:number, devise = "CAD", date:Timestamp = Timestamp.now() ) {
+    constructor( amount:number, tags:Array<string>, devise = "CAD", date:Timestamp = Timestamp.now() ) {
         this._amount = amount
+        this._tags = tags
         this._devise = devise
         this._date = date
     }
@@ -24,6 +26,7 @@ export class Expense {
             amount: this._amount,
             date: this._date,
             devise: this._devise,
+            tags: this._tags,
         })
     }
 
@@ -56,7 +59,7 @@ export class Expense {
                 amount = exp.data().amount * 1.49
             }
 
-            exps.push( new Expense( amount, "CAD", exp.data().date ) )
+            exps.push( new Expense( amount, exp.data().tags || [], "CAD", exp.data().date ) )
         })
 
         return exps
