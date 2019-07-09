@@ -9,7 +9,7 @@ export const add = ( ctx:any ) => {
     const message = ctx.update.message
     const tmp = message.text.split( " " )
 
-    if ( typeof tmp[ 1 ] !== "number" ) {
+    if ( isNaN( tmp[ 1 ] ) ) {
         ctx.reply( `This is Not A Number ${tmp[ 1 ]}` )
         return
     }
