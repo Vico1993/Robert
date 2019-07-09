@@ -6,7 +6,7 @@ export class Expense {
     _devise: string
     _date: Timestamp
 
-    static _db: CollectionReference = db.collection( "Expenses" )
+    static _db: CollectionReference = db.collection( "Test" )
 
     constructor( amount:number, devise = "CAD", date:Timestamp = Timestamp.now() ) {
         this._amount = amount
