@@ -9,6 +9,11 @@ export const add = ( ctx:any ) => {
     const message = ctx.update.message
     const tmp = message.text.split( " " )
 
+    if ( typeof tmp[ 1 ] !== "number" ) {
+        ctx.reply( `This is Not A Number ${tmp[ 1 ]}` )
+        return
+    }
+
     const expense = new Expense( tmp[ 1 ], tmp[ 2 ] || "CAD" )
 
     return expense.Save().then( async () => {
