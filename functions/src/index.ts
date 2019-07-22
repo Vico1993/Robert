@@ -14,7 +14,7 @@ export const robhook = functions.https.onRequest( (req, res) => {
 /**
  * Functions execute when a new document is add to the Collection
  */
-exports.createUser = functions.firestore
+exports.createExpense = functions.firestore
 	.document('Expenses/{expenseId}').onCreate( async ( snap, context ) => {
 		let sum = 0
 		const exps = await Expense.getAllExpenseForToday()

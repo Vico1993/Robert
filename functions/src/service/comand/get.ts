@@ -14,6 +14,10 @@ export const get = async ( ctx:any ) => {
     if ( tmp[ 1 ] === "today" ) {
         const exps = await Expense.getAllExpenseForToday()
 
+        exps.forEach( exp => {
+            console.log( exp.toString() )
+        })
+
         if ( exps.length > 0 ) {
             sum = exps.reduce((a, b) => a + Number( b._amount ), 0)
         }
