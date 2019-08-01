@@ -17,7 +17,13 @@ export const robhook = functions.https.onRequest( (req, res) => {
 exports.createExpense = functions.firestore
 	.document('Expenses/{expenseId}').onCreate( async ( snap, context ) => {
 		let sum = 0
-		const exps = await Expense.getAllExpenseForToday()
+
+		const date = new Date()
+        if ( date.getHours() < 4 ) {
+            date.setDate( date.getDate() - 1 )
+		}
+
+		const exps = await Expense.getAllExpenseForToday( date )
 
         if ( exps.length > 0 ) {
             sum = exps.reduce((a, b) => a + Number( b._amount ), 0)

@@ -20,7 +20,13 @@ export const add = ( ctx:any ) => {
         // When the document is save
         // Check the new sum of the day and return the result
         let sum = 0
-        const exps = await Expense.getAllExpenseForToday()
+
+        const date = new Date( message.date * 1000 )
+        if ( date.getHours() < 4 ) {
+            date.setDate( date.getDate() - 1 )
+        }
+
+        const exps = await Expense.getAllExpenseForToday( date )
 
         if ( exps.length > 0 ) {
             sum = exps.reduce((a, b) => a + Number( b._amount ), 0)

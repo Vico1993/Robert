@@ -76,15 +76,12 @@ export class Expense {
     /**
      * Return the list of expenses for today
      *
+     * @param {Date} today Date of the message
      * @returns {Promise}
      */
-    static async getAllExpenseForToday(): Promise<Expense[]> {
-        // Get date for today first seconde
-        const today = new Date()
-        // Timezone from firebase functions server
-        today.setHours( 4, 0, 0, 0 )
-
-        const expenses = await Expense._db.where( 'date', '>=', Timestamp.fromDate( today ) ).get()
+    static async getAllExpenseForToday( date:Date ): Promise<Expense[]> {
+        date.setHours( 0, 0, 0, 0 )
+        const expenses = await Expense._db.where( 'date', '>=', Timestamp.fromDate( date ) ).get()
 
         return this.Load( expenses )
     }
@@ -92,12 +89,11 @@ export class Expense {
     /**
      * Return the list of expenses for the Week
      *
+     * @param {Date} today Date of the message
      * @todo: Right know need to be execute in sunday.. if it's run on Monday... will return the same result as `getAllExpenseForToday`
      * @returns {Promise}
      */
-    static async getAllExpenseForTheWeek(): Promise<Expense[]> {
-        // Get date for today first seconde
-        const today = new Date()
+    static async getAllExpenseForTheWeek( today:Date ): Promise<Expense[]> {
         const day = today.getDay() || 7
         if ( day !== 1 ) {
             today.setHours( -24 * ( day - 1 ) )

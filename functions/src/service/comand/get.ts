@@ -9,14 +9,17 @@ export const get = async ( ctx:any ) => {
     const message = ctx.update.message
     const tmp = message.text.split( " " )
 
+    // Get the date from the message
+    const date = new Date( message.date * 1000 )
+
+    if ( date.getHours() < 4 ) {
+        date.setDate( date.getDate() - 1 )
+    }
+
     // tmp[ 1 ] should be `today` | `week`
     let sum = 0
     if ( tmp[ 1 ] === "today" ) {
-        const exps = await Expense.getAllExpenseForToday()
-
-        exps.forEach( exp => {
-            console.log( exp.toString() )
-        })
+        const exps = await Expense.getAllExpenseForToday( date )
 
         if ( exps.length > 0 ) {
             sum = exps.reduce((a, b) => a + Number( b._amount ), 0)
@@ -26,7 +29,7 @@ export const get = async ( ctx:any ) => {
         return
 
     } else if ( tmp[ 1 ] === "week" ) {
-        const exps = await Expense.getAllExpenseForTheWeek()
+        const exps = await Expense.getAllExpenseForTheWeek( date )
 
         if ( exps.length > 0 ) {
             sum = exps.reduce((a, b) => a + Number( b._amount ), 0)
